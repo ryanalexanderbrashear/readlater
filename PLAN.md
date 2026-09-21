@@ -28,6 +28,9 @@ todo-list API would teach.
 4. **Tests from milestone 5 onward are not optional.** Retrofitting them is worse.
 5. **Watch for Spring-fluency masquerading as Java-fluency.** Milestones 4 and 6
    are deliberately framework-light as a check on this.
+6. **Make every new test fail on purpose before trusting it.** A green build only
+   proves nothing failed — a test that never ran cannot fail. Check `Tests run: N`
+   against the number of tests you expect.
 
 ## Target stack
 
@@ -56,9 +59,9 @@ Prove the whole loop works before writing any real logic.
 - [x] Install Maven (3.9.16, tarball to `~/.local`)
 - [x] `git init`, `.gitignore` for Java/Maven/IDE
 - [x] Spring Boot project via start.spring.io (web, validation)
-- [ ] One endpoint (`GET /health`) returning a hardcoded response
-- [ ] One test asserting it returns 200
-- [ ] `mvn test` green, committed
+- [x] One endpoint (`GET /health`) returning a hardcoded response
+- [x] One test asserting it returns 200 (`@WebMvcTest` slice, not `@SpringBootTest`)
+- [x] `mvn test` green, committed
 
 **Relearning focus:** Maven's project layout and lifecycle; how a Boot app boots.
 
@@ -177,6 +180,11 @@ Only after milestone 9, and only if it's still fun:
   written against Boot 3 — expect small deltas.
 - Initializr reports versions as `4.1.1.RELEASE`; Maven Central publishes plain
   `4.1.1`. The generated pom needed that corrected by hand.
+- **Boot 4 moved the test annotations.** `@WebMvcTest` and `@AutoConfigureMockMvc`
+  are now in `org.springframework.boot.webmvc.test.autoconfigure`, not
+  `org.springframework.boot.test.autoconfigure.web.servlet` as every Boot 3
+  tutorial will tell you. When an import won't resolve, search the jar before
+  assuming the code is wrong.
 
 ## Known risks
 
@@ -197,3 +205,4 @@ Only after milestone 9, and only if it's still fun:
 |---|---|---|---|
 | 2026-09-21 | — | Plan written | Start milestone 1: install Java 21 + Maven |
 | 2026-09-21 | 1 | Toolchain installed (Java 21 Temurin, Maven 3.9.16), Boot 4.1.1 scaffold generated, `mvn test` green, repo initialised | Alex writes `GET /health` + its test |
+| 2026-09-21 | 1 ✅ | `HealthController` + `HealthControllerTests` done. Reworked from `@SpringBootTest` + manual `MockMvcBuilders` to a `@WebMvcTest` slice; caught a `private` `@Test` that was silently skipped while the build stayed green | Milestone 2: Postgres in Docker, Flyway, JPA entities |
