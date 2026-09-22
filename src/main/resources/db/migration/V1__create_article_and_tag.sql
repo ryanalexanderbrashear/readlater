@@ -8,7 +8,7 @@ CREATE TABLE article (
     url TEXT UNIQUE NOT NULL,
     title TEXT NULL,
     author TEXT NULL,
-    status TEXT NOT NULL DEFAULT 'pending' CHECK (status IN ('pending', 'fetched', 'failed')),
+    status TEXT NOT NULL DEFAULT 'PENDING' CHECK (status IN ('PENDING', 'FETCHED', 'FAILED')),
     read_at TIMESTAMPTZ NULL,
     content TEXT NULL,
     created_at TIMESTAMPTZ NOT NULL DEFAULT CURRENT_TIMESTAMP,
